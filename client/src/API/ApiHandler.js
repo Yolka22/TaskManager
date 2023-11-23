@@ -14,6 +14,29 @@ class ApiHandler {
         console.error("Server Ofline", error);
       });
   }
+
+
+  static UserRegister(){
+    axios
+      .post(`${host}/user/register`,user)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("error", error);
+      });
+  }
+
+  static UserLogin(user){
+    axios
+      .post(`${host}/user/login`,user)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("error", error);
+      });
+  }
 }
 
 export default ApiHandler;

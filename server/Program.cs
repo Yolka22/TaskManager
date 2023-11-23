@@ -19,4 +19,8 @@ app.UseCors();
 app.MapGet("/", () => "hello world!!");
 app.MapGet("/isonline", () => true);
 
+app.MapPost("/user/register",()=>{
+    
+});
+
 app.Run();
