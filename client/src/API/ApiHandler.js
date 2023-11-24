@@ -16,7 +16,7 @@ class ApiHandler {
   }
 
 
-  static UserRegister(){
+  static UserRegister(user){
     axios
       .post(`${host}/user/register`,user)
       .then((response) => {
