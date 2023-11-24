@@ -67,6 +67,8 @@ app.MapPost("/user/register", async (HttpContext context, AppDb db, HttpResponse
 
 });
 
+
+
 app.Run();
 
 public class AppDb : DbContext
