@@ -42,7 +42,9 @@ app.MapPost("/user/login", async (HttpContext context, AppDb db) =>
         {
             // User is authenticated
             context.Response.StatusCode = 200;
-            await context.Response.WriteAsJsonAsync(new { Message = "Login successful" });
+
+            // Return the entire user object instead of just the AuthId
+            await context.Response.WriteAsJsonAsync(authenticatedUser);
         }
         else
         {
@@ -50,8 +52,7 @@ app.MapPost("/user/login", async (HttpContext context, AppDb db) =>
             context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(new { Message = "Login failed" });
         }
-    };
-
+    }
 });
 
 app.MapPost("/user/register", async (HttpContext context, AppDb db, HttpResponse res) =>
