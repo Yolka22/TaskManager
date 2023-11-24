@@ -26,18 +26,23 @@ class ApiHandler {
       });
   }
 
-  static async UserLogin(user, dispatch) {
+  static async UserLogin(user, dispatch,navigate) {
     try {
-      const response = await axios.post(`${host}/user/login`, user);
-      console.log(response.data);
+        const response = await axios.post(`${host}/user/login`, user);
+        console.log(response.data);
 
-      // Assuming your user data is nested under the 'data' property
-      // Adjust accordingly based on the actual structure of your API response
-      dispatch(setUser(response.data));  // Dispatch the setUser action
+        // Assuming your user data is nested under the 'data' property
+        // Adjust accordingly based on the actual structure of your API response
+        await dispatch(setUser(response.data));  // Dispatch the setUser action
+
+        if (response.data !== null) {
+            navigate("/home");  // Use React Router's navigate function
+        }
     } catch (error) {
-      console.error("error", error);
+        console.error("error", error);
     }
-  }
+}
+
 }
 
 export default ApiHandler;

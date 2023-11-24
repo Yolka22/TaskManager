@@ -14,7 +14,7 @@ export default function Register() {
         <input {...register("Name", {required:true})} placeholder="Name" />
         <input {...register("Password", {required:true})} placeholder="Password" />
         <input {...register("RepeatPassword", {required:true})} placeholder="Repeat Password" />
-        <input type="submit" />
+        <input type="submit" value="Register"/>
       </form>
     );
   }
