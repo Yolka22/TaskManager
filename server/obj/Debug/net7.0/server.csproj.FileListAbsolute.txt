@@ -60,3 +60,4 @@ D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Humanizer.dll
 D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
 D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\System.CodeDom.dll
+D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Newtonsoft.Json.dll

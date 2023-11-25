@@ -12,6 +12,8 @@ export default function AddTaskForm() {
             taskData.UserId=UserId;
             console.log(taskData);
             await ApiHandler.TaskAdd( taskData , dispatch);
+            await ApiHandler.UserRefresh( UserId , dispatch);
+            
         } catch (error) {
             console.error("Error adding task", error);
         }

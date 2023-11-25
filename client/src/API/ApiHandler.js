@@ -29,7 +29,6 @@ class ApiHandler {
   static async UserLogin(user, dispatch, navigate) {
     try {
       const response = await axios.post(`${host}/user/login`, user);
-      console.log(response.data);
 
       // Assuming your user data is nested under the 'data' property
       // Adjust accordingly based on the actual structure of your API response
@@ -42,6 +41,27 @@ class ApiHandler {
       console.error("error", error);
     }
   }
+
+
+  static async UserRefresh(userId, dispatch) {
+    try {
+        const response = await axios.post(`${host}/user/refresh`, { userId });
+
+        if (response.status !== 200) {
+            throw new Error(`Error refreshing user: ${response.statusText}`);
+        }
+
+        const data = response.data;
+        await dispatch(setUser(data));
+
+        return response;
+    } catch (error) {
+        console.error(`Error in UserRefresh: ${error.message}`);
+        throw error;
+    }
+}
+
+
 
   static async TaskAdd(taskData, dispatch) {
     try {

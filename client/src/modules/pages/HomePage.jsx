@@ -21,7 +21,9 @@ export default function HomePage() {
       <TabPanel value={1}>
         <Box
           sx={{
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)", // 7 tasks in each row
+            gap: 2, // Adjust the gap between tasks
           }}
         >
           {logUser.tasks.map((task) => {

@@ -62,6 +62,49 @@ app.MapPost("/user/register", async (HttpContext context, AppDb db, HttpResponse
 
 });
 
+app.MapPost("/user/refresh", async (HttpContext context, AppDb db, HttpResponse res) =>
+{
+    try
+    {
+        // Получите идентификатор пользователя из тела запроса
+        using (StreamReader reader = new StreamReader(context.Request.Body))
+        {
+            string requestBody = await reader.ReadToEndAsync();
+            var payload = JsonConvert.DeserializeObject<UserRefreshPayload>(requestBody);
+
+            if (payload != null && int.TryParse(payload.UserId.ToString(), out int userId))
+            {
+                Console.WriteLine(userId);
+
+                // Теперь у вас есть идентификатор пользователя, и вы можете использовать его для поиска пользователя в базе данных
+                var user = await db.Users.Include(u => u.Tasks).FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (user != null)
+                {
+                    // Пользователь найден, возвращаем его с задачами
+                    context.Response.StatusCode = 200;
+                    await context.Response.WriteAsJsonAsync(user);
+                }
+                else
+                {
+                    // Пользователь не найден
+                    context.Response.StatusCode = 404; // Not Found
+                    await context.Response.WriteAsync("User not found");
+                }
+            }
+
+        }
+    }
+    catch (Exception ex)
+    {
+        // Обработка исключений, если что-то пошло не так
+        Console.Error.WriteLine($"Error processing user refresh request: {ex.Message}");
+        context.Response.StatusCode = 500; // Internal Server Error
+        await context.Response.WriteAsync("Internal Server Error");
+    }
+});
+
+
 app.MapPost("/task", async (HttpContext context, AppDb db) =>
 {
     try
@@ -116,6 +159,10 @@ public class User
     }
 }
 
+public class UserRefreshPayload
+{
+    public int UserId { get; set; }
+}
 
 public class Task
 {
