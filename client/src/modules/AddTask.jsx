@@ -5,6 +5,7 @@ import ModalClose from '@mui/joy/ModalClose';
 import Sheet from '@mui/joy/Sheet';
 
 import AddTaskForm from './forms/AddTaskForm';
+import { Typography } from '@mui/joy';
 
 export default function AddTask() {
   const [open, setOpen] = React.useState(false);
@@ -13,8 +14,9 @@ export default function AddTask() {
       <Button sx={{
         height:"250px",
         width:"250px",
+        background:"gray"
       }} variant="outlined" color="neutral" onClick={() => setOpen(true)}>
-        Add Task
+        <Typography>Add Task</Typography>
       </Button>
       <Modal
         aria-labelledby="modal-title"
