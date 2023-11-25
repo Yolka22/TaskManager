@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from "./styles.module.css";
 import { useForm } from "react-hook-form";
 import ApiHandler from '../../API/ApiHandler';
 
 export default function RegisterForm() {
     const { register, handleSubmit } = useForm();
-    const [data, setData] = useState("");
   
     return (
       <form className={styles.form} onSubmit={handleSubmit((data) => {
