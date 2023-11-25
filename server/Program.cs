@@ -31,24 +31,18 @@ app.MapPost("/user/login", async (HttpContext context, AppDb db) =>
     var user = await context.Request.ReadFromJsonAsync<User>();
     Console.WriteLine($"Received login request for user: {user?.Name}");
 
-    // Validate user credentials (you might want to check against your list of users)
-
     if (user != null)
     {
-        // For simplicity, I'm just checking against the predefined list of users
-        var authenticatedUser = db.Users.FirstOrDefault(u => u.Name == user.Name && u.Password == user.Password);
+        // Include related tasks using lazy loading
+        var authenticatedUser = db.Users.Include(u => u.Tasks).FirstOrDefault(u => u.Name == user.Name && u.Password == user.Password);
 
         if (authenticatedUser != null)
         {
-            // User is authenticated
             context.Response.StatusCode = 200;
-
-            // Return the entire user object instead of just the AuthId
             await context.Response.WriteAsJsonAsync(authenticatedUser);
         }
         else
         {
-            // Authentication failed
             context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(new { Message = "Login failed" });
         }
@@ -68,6 +62,33 @@ app.MapPost("/user/register", async (HttpContext context, AppDb db, HttpResponse
 
 });
 
+app.MapPost("/task", async (HttpContext context, AppDb db) =>
+{
+    try
+    {
+        // Read task data from the request body
+        var newTask = await context.Request.ReadFromJsonAsync<Task>();
+
+        // Print details for debugging
+        Console.WriteLine($"New Task: {System.Text.Json.JsonSerializer.Serialize(newTask)}");
+
+        // Add the task to the database
+        db.Tasks.Add(newTask);
+        await db.SaveChangesAsync();
+
+        context.Response.StatusCode = 201; // Created
+        await context.Response.WriteAsJsonAsync(newTask);
+    }
+    catch (Exception ex)
+    {
+        Console.Error.WriteLine($"Error adding task: {ex.Message}");
+        context.Response.StatusCode = 500; // Internal Server Error
+        await context.Response.WriteAsJsonAsync(new { Message = "Internal Server Error" });
+    }
+});
+
+
+
 
 
 app.Run();
@@ -86,8 +107,8 @@ public class User
     public string Name { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 
-    // Связь с задачами пользователя
-    public List<Task> Tasks { get; set; }
+    // Use 'virtual' to enable lazy loading
+    public virtual List<Task> Tasks { get; set; }
 
     public User()
     {
@@ -107,19 +128,14 @@ public class Task
     public string Comment { get; set; } = string.Empty;
     public string AttachedFile { get; set; } = string.Empty;
 
-    // Связь с пользователем, к которому привязана задача
+    // Store only UserId, not the full User object
     public int UserId { get; set; }
-    public User User { get; set; }
-
-    public Task()
-    {
-        User = new User();
-        Subtasks = new List<Subtask>();
-    }
 
     // Связь с подзадачами
     public List<Subtask> Subtasks { get; set; }
 }
+
+
 
 public class Subtask
 {
