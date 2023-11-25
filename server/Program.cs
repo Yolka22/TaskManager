@@ -134,6 +134,42 @@ app.MapPost("/task", async (HttpContext context, AppDb db) =>
     }
 });
 
+app.MapDelete("/task/{taskId}", async (HttpContext context, AppDb db) => {
+    // Get the task ID from the route parameters
+    if (context.Request.RouteValues.TryGetValue("taskId", out var taskIdValue) &&
+        int.TryParse(taskIdValue?.ToString(), out var taskId))
+    {
+        try {
+            // Find the task by ID
+            var taskToDelete = db.Tasks.FirstOrDefault(t => t.Id == taskId);
+
+            if (taskToDelete != null)
+            {
+                // Remove the task from the context and save changes
+                db.Tasks.Remove(taskToDelete);
+                await db.SaveChangesAsync();
+
+                // Send a success response if the task is deleted successfully
+                context.Response.StatusCode = 200;
+                await context.Response.WriteAsync("Task deleted successfully");
+            }
+            else
+            {
+                // Task not found
+                context.Response.StatusCode = 404; // Not Found
+                await context.Response.WriteAsync("Task not found");
+            }
+        } catch (Exception ex) {
+            // Handle the exception and send an error response
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsync($"Error deleting task: {ex.Message}");
+        }
+    } else {
+        // Invalid or missing task ID in the route parameters
+        context.Response.StatusCode = 400; // Bad Request
+        await context.Response.WriteAsync("Invalid or missing task ID");
+    }
+});
 
 
 

@@ -1,4 +1,4 @@
-import {React ,useState, Fragment} from "react";
+import { React, useState, Fragment } from "react";
 import Button from "@mui/joy/Button";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
@@ -6,14 +6,29 @@ import Sheet from "@mui/joy/Sheet";
 
 import { Box, Typography } from "@mui/joy";
 
-export default function Task({ task }) {
+import ApiHandler from "../API/ApiHandler";
+
+export default function Task({ task, userId, dispatch }) {
   const [open, setOpen] = useState(false);
+
+  const deleteHandler = () => {
+    ApiHandler.TaskDelete(task.id);
+
+    setTimeout(() => {
+      ApiHandler.UserRefresh(userId, dispatch);
+    }, 500);
+  };
+
   return (
     <Fragment>
       <Button
         sx={{
           height: "250px",
           width: "250px",
+          backgroundColor: "#EBF5DF",
+          ":hover": {
+            backgroundColor: "#BAD4AA",
+          },
         }}
         variant="outlined"
         color="neutral"
@@ -68,6 +83,9 @@ export default function Task({ task }) {
           <Typography level="h2" fontSize="xl">
             {task.deadline}
           </Typography>
+          <Button color="danger" onClick={deleteHandler}>
+            delete
+          </Button>
         </Sheet>
       </Modal>
     </Fragment>

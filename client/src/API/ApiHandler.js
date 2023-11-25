@@ -68,6 +68,16 @@ class ApiHandler {
       throw error; // rethrow the error to handle it in the component
     }
   }
+
+  static async TaskDelete(taskId) {
+    try {
+      await axios.delete(`${host}/task/${taskId}`);
+      console.log("Task deleted successfully");
+    } catch (error) {
+      console.error("Error deleting task", error);
+      // Handle the error in your application
+    }
+  }
 }
 
 export default ApiHandler;
