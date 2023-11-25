@@ -42,32 +42,27 @@ class ApiHandler {
     }
   }
 
-
   static async UserRefresh(userId, dispatch) {
     try {
-        const response = await axios.post(`${host}/user/refresh`, { userId });
+      const response = await axios.post(`${host}/user/refresh`, { userId });
 
-        if (response.status !== 200) {
-            throw new Error(`Error refreshing user: ${response.statusText}`);
-        }
+      if (response.status !== 200) {
+        throw new Error(`Error refreshing user: ${response.statusText}`);
+      }
 
-        const data = response.data;
-        await dispatch(setUser(data));
+      const data = response.data;
+      await dispatch(setUser(data));
 
-        return response;
+      return response;
     } catch (error) {
-        console.error(`Error in UserRefresh: ${error.message}`);
-        throw error;
+      console.error(`Error in UserRefresh: ${error.message}`);
+      throw error;
     }
-}
+  }
 
-
-
-  static async TaskAdd(taskData, dispatch) {
+  static async TaskAdd(taskData) {
     try {
       const response = await axios.post(`${host}/task`, taskData);
-      // Handle the response, update state, or dispatch actions if needed
-      console.log("Task added successfully", response.data);
     } catch (error) {
       console.error("Error adding task", error);
       throw error; // rethrow the error to handle it in the component

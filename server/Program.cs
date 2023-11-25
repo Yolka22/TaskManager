@@ -115,12 +115,16 @@ app.MapPost("/task", async (HttpContext context, AppDb db) =>
         // Print details for debugging
         Console.WriteLine($"New Task: {System.Text.Json.JsonSerializer.Serialize(newTask)}");
 
-        // Add the task to the database
-        db.Tasks.Add(newTask);
-        await db.SaveChangesAsync();
+        if (newTask != null)
+        {
+            // Add the task to the database
+            db.Tasks.Add(newTask);
+            await db.SaveChangesAsync();
 
-        context.Response.StatusCode = 201; // Created
-        await context.Response.WriteAsJsonAsync(newTask);
+            context.Response.StatusCode = 201; // Created
+            await context.Response.WriteAsJsonAsync(newTask);
+        }
+
     }
     catch (Exception ex)
     {

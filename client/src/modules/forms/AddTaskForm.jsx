@@ -10,7 +10,6 @@ export default function AddTaskForm() {
     const onSubmit = async (taskData) => {
         try {
             taskData.UserId=UserId;
-            console.log(taskData);
             await ApiHandler.TaskAdd( taskData , dispatch);
             await ApiHandler.UserRefresh( UserId , dispatch);
             
