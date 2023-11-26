@@ -269,7 +269,7 @@ public class Task
     public int UserId { get; set; }
 
     // Связь с подзадачами
-    public List<Subtask> Subtasks { get; set; }
+    public List<Subtask> Subtasks { get; set; } = new List<Subtask>();
 }
 public class Subtask
 {
