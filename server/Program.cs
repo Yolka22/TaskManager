@@ -19,8 +19,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-
-
 app.UseCors();
 
 app.MapGet("/", () => "hello world!!");
@@ -29,12 +27,14 @@ app.MapGet("/isonline", () => true);
 app.MapPost("/user/login", async (HttpContext context, AppDb db) =>
 {
     var user = await context.Request.ReadFromJsonAsync<User>();
-    Console.WriteLine($"Received login request for user: {user?.Name}");
 
     if (user != null)
     {
         // Include related tasks using lazy loading
-        var authenticatedUser = db.Users.Include(u => u.Tasks).FirstOrDefault(u => u.Name == user.Name && u.Password == user.Password);
+        var authenticatedUser = db.Users
+        .Include(u => u.Tasks)
+        .ThenInclude(t => t.Subtasks)
+        .FirstOrDefault(u => u.Name == user.Name && u.Password == user.Password);
 
         if (authenticatedUser != null)
         {
@@ -74,7 +74,6 @@ app.MapPost("/user/refresh", async (HttpContext context, AppDb db, HttpResponse 
 
             if (payload != null && int.TryParse(payload.UserId.ToString(), out int userId))
             {
-                Console.WriteLine(userId);
 
                 // Теперь у вас есть идентификатор пользователя, и вы можете использовать его для поиска пользователя в базе данных
                 var user = await db.Users.Include(u => u.Tasks).FirstOrDefaultAsync(u => u.Id == userId);
@@ -105,15 +104,13 @@ app.MapPost("/user/refresh", async (HttpContext context, AppDb db, HttpResponse 
 });
 
 
+
 app.MapPost("/task", async (HttpContext context, AppDb db) =>
 {
     try
     {
         // Read task data from the request body
         var newTask = await context.Request.ReadFromJsonAsync<Task>();
-
-        // Print details for debugging
-        Console.WriteLine($"New Task: {System.Text.Json.JsonSerializer.Serialize(newTask)}");
 
         if (newTask != null)
         {
@@ -134,12 +131,14 @@ app.MapPost("/task", async (HttpContext context, AppDb db) =>
     }
 });
 
-app.MapDelete("/task/{taskId}", async (HttpContext context, AppDb db) => {
+app.MapDelete("/task/{taskId}", async (HttpContext context, AppDb db) =>
+{
     // Get the task ID from the route parameters
     if (context.Request.RouteValues.TryGetValue("taskId", out var taskIdValue) &&
         int.TryParse(taskIdValue?.ToString(), out var taskId))
     {
-        try {
+        try
+        {
             // Find the task by ID
             var taskToDelete = db.Tasks.FirstOrDefault(t => t.Id == taskId);
 
@@ -159,12 +158,16 @@ app.MapDelete("/task/{taskId}", async (HttpContext context, AppDb db) => {
                 context.Response.StatusCode = 404; // Not Found
                 await context.Response.WriteAsync("Task not found");
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             // Handle the exception and send an error response
             context.Response.StatusCode = 500;
             await context.Response.WriteAsync($"Error deleting task: {ex.Message}");
         }
-    } else {
+    }
+    else
+    {
         // Invalid or missing task ID in the route parameters
         context.Response.StatusCode = 400; // Bad Request
         await context.Response.WriteAsync("Invalid or missing task ID");
@@ -173,12 +176,59 @@ app.MapDelete("/task/{taskId}", async (HttpContext context, AppDb db) => {
 
 
 
+app.MapPost("/subtask", async (HttpContext context, AppDb db) =>
+{
+    try
+    {
+        // Read subtask data from the request body
+        var subtaskData = await context.Request.ReadFromJsonAsync<Subtask>();
+
+        // Print details for debugging
+        Console.WriteLine($"New Subtask: {System.Text.Json.JsonSerializer.Serialize(subtaskData)}");
+
+        if (subtaskData != null)
+        {
+            // Check if the associated task exists
+            var associatedTask = await db.Tasks.FirstOrDefaultAsync(t => t.Id == subtaskData.TaskId);
+
+            if (associatedTask != null)
+            {
+                // Add the subtask to the database
+                db.Subtasks.Add(subtaskData);
+                await db.SaveChangesAsync();
+
+                context.Response.StatusCode = 201; // Created
+                await context.Response.WriteAsJsonAsync(subtaskData);
+            }
+            else
+            {
+                // Associated task not found
+                context.Response.StatusCode = 404; // Not Found
+                await context.Response.WriteAsync("Associated task not found");
+            }
+        }
+        else
+        {
+            // Invalid subtask data
+            context.Response.StatusCode = 400; // Bad Request
+            await context.Response.WriteAsync("Invalid subtask data");
+        }
+
+    }
+    catch (Exception ex)
+    {
+        Console.Error.WriteLine($"Error adding subtask: {ex.Message}");
+        context.Response.StatusCode = 500; // Internal Server Error
+        await context.Response.WriteAsJsonAsync(new { Message = "Internal Server Error" });
+    }
+});
 
 app.Run();
 
 public class AppDb : DbContext
 {
     public AppDb(DbContextOptions<AppDb> options) : base(options) { }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Task> Tasks { get; set; }
     public DbSet<Subtask> Subtasks { get; set; }
@@ -221,9 +271,6 @@ public class Task
     // Связь с подзадачами
     public List<Subtask> Subtasks { get; set; }
 }
-
-
-
 public class Subtask
 {
     public int Id { get; set; }
@@ -232,10 +279,4 @@ public class Subtask
 
     // Связь с основной задачей
     public int TaskId { get; set; }
-    public Task Task { get; set; }
-
-    public Subtask()
-    {
-        Task = new Task(); // или присвойте уже существующий объект задачи
-    }
 }
