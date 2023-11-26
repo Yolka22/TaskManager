@@ -3,6 +3,9 @@ import styles from "./styles.module.css";
 import { useForm } from "react-hook-form";
 import ApiHandler from '../../API/ApiHandler';
 import { useDispatch,useSelector } from 'react-redux';
+
+import { Box, Input, Typography } from '@mui/joy';
+
 export default function AddTaskForm() {
     const dispatch = useDispatch();
     const { register, handleSubmit } = useForm();
@@ -21,10 +24,19 @@ export default function AddTaskForm() {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("Title", { required: true })} placeholder="Title" />
-            <input {...register("Description")} placeholder="Description" />
-            <input {...register("Deadline")} type="datetime-local" placeholder="Deadline" />
-            <input type="submit" value="Add Task" />
+            <Input sx={inputSx} {...register("Title", { required: true })} placeholder="Title" />
+            <Input sx={inputSx} {...register("Description")} placeholder="Description" />
+            <Input sx={inputSx} {...register("Deadline")} type="datetime-local" placeholder="Deadline" />
+            <Box sx={{display:"flex",alignItems:"center"}}>
+                <Typography>Priority</Typography>
+                <Input sx={inputSx} {...register("Priority")} type="number"/>
+            </Box>
+           
+            <Input sx={inputSx} type="submit" value="Add Task" />
         </form>
     );
+}
+
+const inputSx = {
+    margin:"5px"
 }

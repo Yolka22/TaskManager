@@ -74,10 +74,13 @@ export default function Task({ task, userId, dispatch }) {
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
           <Typography level="h2" fontSize="xl">
-            {task.title}
+            {`Priority: ${task.priority}`}
           </Typography>
           <Typography level="h2" fontSize="xl">
-            {task.description}
+          {`Title: ${task.title}`}
+          </Typography>
+          <Typography level="h2" fontSize="xl">
+          {`Description: ${task.description}`}
           </Typography>
           <Typography level="h2" fontSize="xl">
             Sub Tasks
@@ -105,7 +108,7 @@ export default function Task({ task, userId, dispatch }) {
           </Box>
 
           <Typography level="h2" fontSize="xl">
-            {task.deadline}
+          {`Deadline: ${task.deadline}`}
           </Typography>
           <Button color="danger" onClick={deleteHandler}>
             delete

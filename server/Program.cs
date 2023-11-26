@@ -30,7 +30,6 @@ app.MapPost("/user/login", async (HttpContext context, AppDb db) =>
 
     if (user != null)
     {
-        // Include related tasks using lazy loading
         var authenticatedUser = db.Users
         .Include(u => u.Tasks)
         .ThenInclude(t => t.Subtasks)

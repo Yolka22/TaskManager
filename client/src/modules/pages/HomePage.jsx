@@ -4,12 +4,11 @@ import { Tab } from "@mui/base/Tab";
 import { TabsList } from "@mui/base/TabsList";
 import { TabPanel } from "@mui/base/TabPanel";
 import { Tabs } from "@mui/base/Tabs";
-import AddTask from "../AddTask";
-import Task from "../Task";
 import { Box, Typography } from "@mui/joy";
 import { styled } from "@mui/system";
 
-import { useDispatch } from "react-redux";
+import TasksList from "../TasksList";
+import TasksListWithSort from "../TasksListWithSort";
 
 const CustomTabs = styled(Tabs)({
   backgroundColor: "#f0f0f0",
@@ -39,8 +38,6 @@ export default function HomePage() {
   const logUser = useSelector((state) => state.user.logedUser);
   const [selectedTab, setSelectedTab] = useState(1);
 
-  const dispatch = useDispatch();
-
   const handleChangeTab = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -55,23 +52,11 @@ export default function HomePage() {
         <Typography level="h3" fontSize="xl">User Info</Typography>
         </CustomTab>
         <CustomTab value={3} selected={selectedTab === 3}>
-        <Typography level="h3" fontSize="xl">Stat</Typography>
+        <Typography level="h3" fontSize="xl">Schedule</Typography>
         </CustomTab>
       </CustomTabsList>
       <TabPanel value={1}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            gap: 2,
-            margin:"5px",
-          }}
-        >
-          {logUser.tasks.map((task) => (
-            <Task key={task.id} task={task} dispatch={dispatch} userId={logUser.id}/>
-          ))}
-          <AddTask />
-        </Box>
+        <TasksList array={logUser.tasks} userId={logUser.id}></TasksList>
       </TabPanel>
       <TabPanel value={2}>
         <Box>
@@ -84,6 +69,9 @@ export default function HomePage() {
             <Typography>{logUser.name}</Typography>
           </Box>
         </Box>
+      </TabPanel>
+      <TabPanel value={3}>
+        <TasksListWithSort array={logUser.tasks} userId={logUser.id}></TasksListWithSort>
       </TabPanel>
     </CustomTabs>
   );
