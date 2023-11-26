@@ -78,6 +78,17 @@ class ApiHandler {
       // Handle the error in your application
     }
   }
+
+  static async addSubTask({ TaskId, title }) {
+    try {
+        console.log({ TaskId, title });
+        const response = await axios.post(`${host}/subtask`, { TaskId, title });
+        console.log(response.data);
+    } catch (error) {
+        console.error("Error adding sub task", error);
+    }
+}
+
 }
 
 export default ApiHandler;

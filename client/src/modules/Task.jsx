@@ -4,13 +4,15 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
 
-import { Box, Typography } from "@mui/joy";
+import { Box, Input, Typography } from "@mui/joy";
 
 import ApiHandler from "../API/ApiHandler";
+import SubTasksList from "./SubTasksList";
 
 export default function Task({ task, userId, dispatch }) {
   const [open, setOpen] = useState(false);
-
+  const [newSubTask,setSubTask] = useState("");
+  const TaskId = task.id;
   const deleteHandler = () => {
     ApiHandler.TaskDelete(task.id);
 
@@ -59,6 +61,8 @@ export default function Task({ task, userId, dispatch }) {
             borderRadius: "md",
             p: 3,
             boxShadow: "lg",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <ModalClose variant="plain" sx={{ m: 1 }} />
@@ -74,12 +78,20 @@ export default function Task({ task, userId, dispatch }) {
           {task.subtasks == null ? (
             <Box sx={{ width: 400, height: 40 }}>No Subtasks</Box>
           ) : (
-            <Box>
-              {task.subtasks.map((subtask) => {
-                return <Typography>{subtask.title}</Typography>;
-              })}
-            </Box>
+            <SubTasksList array={task.subtasks}/>
           )}
+          <Box sx={{ display: "flex" }}>
+            <Input onChange={(e)=>{setSubTask(e.target.value)}} sx={{flexGrow:1}}></Input>
+            <Button
+            onClick={()=>{ApiHandler.addSubTask({TaskId: TaskId, title: newSubTask })}}
+              sx={{
+                alignSelf: "center",
+              }}
+            >
+              add subTask
+            </Button>
+          </Box>
+
           <Typography level="h2" fontSize="xl">
             {task.deadline}
           </Typography>
