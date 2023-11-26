@@ -5,7 +5,6 @@ import ApiHandler from '../../API/ApiHandler';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { Input } from '@mui/joy';
-import { width } from '@mui/system';
 
 export default function LoginForm() {
 
