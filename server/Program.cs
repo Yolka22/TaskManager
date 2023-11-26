@@ -66,7 +66,7 @@ app.MapPost("/user/refresh", async (HttpContext context, AppDb db, HttpResponse 
 {
     try
     {
-        // Получите идентификатор пользователя из тела запроса
+        // Get the user ID from the request body
         using (StreamReader reader = new StreamReader(context.Request.Body))
         {
             string requestBody = await reader.ReadToEndAsync();
@@ -74,34 +74,36 @@ app.MapPost("/user/refresh", async (HttpContext context, AppDb db, HttpResponse 
 
             if (payload != null && int.TryParse(payload.UserId.ToString(), out int userId))
             {
-
-                // Теперь у вас есть идентификатор пользователя, и вы можете использовать его для поиска пользователя в базе данных
-                var user = await db.Users.Include(u => u.Tasks).FirstOrDefaultAsync(u => u.Id == userId);
+                // Retrieve the user with tasks and subtasks
+                var user = await db.Users
+                    .Include(u => u.Tasks)
+                        .ThenInclude(t => t.Subtasks)
+                    .FirstOrDefaultAsync(u => u.Id == userId);
 
                 if (user != null)
                 {
-                    // Пользователь найден, возвращаем его с задачами
+                    // User found, return with tasks and subtasks
                     context.Response.StatusCode = 200;
                     await context.Response.WriteAsJsonAsync(user);
                 }
                 else
                 {
-                    // Пользователь не найден
+                    // User not found
                     context.Response.StatusCode = 404; // Not Found
                     await context.Response.WriteAsync("User not found");
                 }
             }
-
         }
     }
     catch (Exception ex)
     {
-        // Обработка исключений, если что-то пошло не так
+        // Handle exceptions if something goes wrong
         Console.Error.WriteLine($"Error processing user refresh request: {ex.Message}");
         context.Response.StatusCode = 500; // Internal Server Error
         await context.Response.WriteAsync("Internal Server Error");
     }
 });
+
 
 
 

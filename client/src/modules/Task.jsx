@@ -11,11 +11,18 @@ import SubTasksList from "./SubTasksList";
 
 export default function Task({ task, userId, dispatch }) {
   const [open, setOpen] = useState(false);
-  const [newSubTask,setSubTask] = useState("");
+  const [newSubTask, setSubTask] = useState("");
   const TaskId = task.id;
   const deleteHandler = () => {
     ApiHandler.TaskDelete(task.id);
 
+    setTimeout(() => {
+      ApiHandler.UserRefresh(userId, dispatch);
+    }, 500);
+  };
+
+  const addSubtaskHandler = () => {
+    ApiHandler.addSubTask({ TaskId: TaskId, title: newSubTask });
     setTimeout(() => {
       ApiHandler.UserRefresh(userId, dispatch);
     }, 500);
@@ -78,12 +85,17 @@ export default function Task({ task, userId, dispatch }) {
           {task.subtasks == null ? (
             <Box sx={{ width: 400, height: 40 }}>No Subtasks</Box>
           ) : (
-            <SubTasksList array={task.subtasks}/>
+            <SubTasksList array={task.subtasks} />
           )}
           <Box sx={{ display: "flex" }}>
-            <Input onChange={(e)=>{setSubTask(e.target.value)}} sx={{flexGrow:1}}></Input>
+            <Input
+              onChange={(e) => {
+                setSubTask(e.target.value);
+              }}
+              sx={{ flexGrow: 1 }}
+            ></Input>
             <Button
-            onClick={()=>{ApiHandler.addSubTask({TaskId: TaskId, title: newSubTask })}}
+              onClick={addSubtaskHandler}
               sx={{
                 alignSelf: "center",
               }}
