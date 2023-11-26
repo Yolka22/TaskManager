@@ -178,6 +178,7 @@ app.MapDelete("/task/{taskId}", async (HttpContext context, AppDb db) =>
 
 
 
+
 app.MapPost("/subtask", async (HttpContext context, AppDb db) =>
 {
     try
@@ -222,6 +223,51 @@ app.MapPost("/subtask", async (HttpContext context, AppDb db) =>
         Console.Error.WriteLine($"Error adding subtask: {ex.Message}");
         context.Response.StatusCode = 500; // Internal Server Error
         await context.Response.WriteAsJsonAsync(new { Message = "Internal Server Error" });
+    }
+});
+
+app.MapDelete("/subtask/{subtaskId}", async (HttpContext context, AppDb db) =>
+{
+    // Get the subtask ID from the route parameters
+    if (context.Request.RouteValues.TryGetValue("subtaskId", out var subtaskIdValue) &&
+        int.TryParse(subtaskIdValue?.ToString(), out var subtaskId))
+
+
+    {
+        try
+        {
+            // Find the subtask by ID
+            var subtaskToDelete = db.Subtasks.FirstOrDefault(st => st.Id == subtaskId);
+
+            if (subtaskToDelete != null)
+            {
+                // Remove the subtask from the context and save changes
+                db.Subtasks.Remove(subtaskToDelete);
+                await db.SaveChangesAsync();
+
+                // Send a success response if the subtask is deleted successfully
+                context.Response.StatusCode = 200;
+                await context.Response.WriteAsync("Subtask deleted successfully");
+            }
+            else
+            {
+                // Subtask not found
+                context.Response.StatusCode = 404; // Not Found
+                await context.Response.WriteAsync("Subtask not found");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception and send an error response
+            context.Response.StatusCode = 500;
+            await context.Response.WriteAsync($"Error deleting subtask: {ex.Message}");
+        }
+    }
+    else
+    {
+        // Invalid or missing subtask ID in the route parameters
+        context.Response.StatusCode = 400; // Bad Request
+        await context.Response.WriteAsync("Invalid or missing subtask ID");
     }
 });
 

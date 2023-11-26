@@ -79,6 +79,15 @@ class ApiHandler {
     }
   }
 
+  static async deleteSubTask(subtaskId) {
+    try {
+      await axios.delete(`${host}/subtask/${subtaskId}`);
+      console.log("Subtask deleted successfully");
+    } catch (error) {
+      console.error("Error deleting subtask", error);
+    }
+  }
+
   static async addSubTask({ TaskId, title }) {
     try {
         console.log({ TaskId, title });
