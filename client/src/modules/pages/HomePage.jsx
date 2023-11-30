@@ -12,7 +12,7 @@ import TasksListWithSort from "../TasksListWithSort";
 
 const CustomTabs = styled(Tabs)({
   backgroundColor: "#f0f0f0",
-  height: "100vh",
+  height: "100%",
 });
 
 const CustomTabsList = styled(TabsList)({
@@ -45,7 +45,7 @@ export default function HomePage() {
   return (
     <CustomTabs value={selectedTab} onChange={handleChangeTab}>
       <CustomTabsList>
-        <CustomTab value={1} selected={selectedTab === 1}>
+        <CustomTab  sx={{height:"100%"}} value={1} selected={selectedTab === 1}>
           <Typography level="h3" fontSize="xl">Tasks</Typography>
         </CustomTab>
         <CustomTab value={2} selected={selectedTab === 2}>

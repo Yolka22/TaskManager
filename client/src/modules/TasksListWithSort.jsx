@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import TasksList from './TasksList';
 import { Box, ButtonGroup, Button } from '@mui/joy';
 
+const sortOptions = [
+  { label: 'Day', value: 'day' },
+  { label: 'Week', value: 'week' },
+  { label: 'Month', value: 'month' },
+  { label: 'Priority', value: 'priority' },
+];
+
 export default function TasksListWithSort({ array, userId }) {
   const [tasks, setTasks] = useState(array);
   const [sortType, setSortType] = useState(null);
@@ -14,13 +21,9 @@ export default function TasksListWithSort({ array, userId }) {
     } else {
       switch (type) {
         case 'day':
-          sortedTasks = sortByDeadline(sortedTasks, 'day');
-          break;
         case 'week':
-          sortedTasks = sortByDeadline(sortedTasks, 'week');
-          break;
         case 'month':
-          sortedTasks = sortByDeadline(sortedTasks, 'month');
+          sortedTasks = sortByDeadline(sortedTasks, type);
           break;
         case 'priority':
           sortedTasks.sort((a, b) => b.priority - a.priority);
@@ -67,31 +70,19 @@ export default function TasksListWithSort({ array, userId }) {
   return (
     <Box>
       <ButtonGroup>
-        <Button
-          onClick={() => handleSort('day')}
-          variant={sortType === 'day' ? 'contained' : 'outlined'}
-        >
-          Day
+        {sortOptions.map(option => (
+          <Button
+            key={option.value}
+            sx={{ width: '100%' }}
+            onClick={() => handleSort(option.value)}
+            variant={sortType === option.value ? 'contained' : 'outlined'}
+          >
+            {option.label}
+          </Button>
+        ))}
+        <Button sx={{ width: '100%' }} onClick={() => handleSort(null)}>
+          Clear
         </Button>
-        <Button
-          onClick={() => handleSort('week')}
-          variant={sortType === 'week' ? 'contained' : 'outlined'}
-        >
-          Week
-        </Button>
-        <Button
-          onClick={() => handleSort('month')}
-          variant={sortType === 'month' ? 'contained' : 'outlined'}
-        >
-          Month
-        </Button>
-        <Button
-          onClick={() => handleSort('priority')}
-          variant={sortType === 'priority' ? 'contained' : 'outlined'}
-        >
-          Priority
-        </Button>
-        <Button onClick={() => handleSort(null)}>Clear</Button>
       </ButtonGroup>
       <TasksList array={tasks} userId={userId} />
     </Box>

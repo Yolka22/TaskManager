@@ -12,8 +12,6 @@ import HomePage from "./modules/pages/HomePage";
 import LoginForm from "./modules/forms/LoginForm";
 import RegisterForm from "./modules/forms/RegisterForm";
 
-
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>

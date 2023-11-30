@@ -1,18 +1,32 @@
-import { React, useState, Fragment } from "react";
+import { React, useState } from "react";
+import { useInView } from 'react-intersection-observer';
+import styled, { keyframes } from 'styled-components';
 import Button from "@mui/joy/Button";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
-
 import { Box, Input, Typography } from "@mui/joy";
-
 import ApiHandler from "../API/ApiHandler";
 import SubTasksList from "./SubTasksList";
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const FadeInFragment = styled.div`
+  animation: ${(props) => (props.inView ? fadeIn : 'none')} 1s ease-in-out;
+`;
 
 export default function Task({ task, userId, dispatch }) {
   const [open, setOpen] = useState(false);
   const [newSubTask, setSubTask] = useState("");
   const TaskId = task.id;
+
   const deleteHandler = () => {
     ApiHandler.TaskDelete(task.id);
 
@@ -28,8 +42,12 @@ export default function Task({ task, userId, dispatch }) {
     }, 500);
   };
 
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+  });
+
   return (
-    <Fragment>
+    <FadeInFragment inView={inView} ref={ref}>
       <Button
         sx={{
           height: "250px",
@@ -77,10 +95,10 @@ export default function Task({ task, userId, dispatch }) {
             {`Priority: ${task.priority}`}
           </Typography>
           <Typography level="h2" fontSize="xl">
-          {`Title: ${task.title}`}
+            {`Title: ${task.title}`}
           </Typography>
           <Typography level="h2" fontSize="xl">
-          {`Description: ${task.description}`}
+            {`Description: ${task.description}`}
           </Typography>
           <Typography level="h2" fontSize="xl">
             Sub Tasks
@@ -108,13 +126,13 @@ export default function Task({ task, userId, dispatch }) {
           </Box>
 
           <Typography level="h2" fontSize="xl">
-          {`Deadline: ${task.deadline}`}
+            {`Deadline: ${task.deadline}`}
           </Typography>
           <Button color="danger" onClick={deleteHandler}>
             delete
           </Button>
         </Sheet>
       </Modal>
-    </Fragment>
+    </FadeInFragment>
   );
 }
