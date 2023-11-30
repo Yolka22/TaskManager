@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Tab } from "@mui/base/Tab";
 import { TabsList } from "@mui/base/TabsList";
@@ -41,6 +41,7 @@ export default function HomePage() {
   const handleChangeTab = (event, newValue) => {
     setSelectedTab(newValue);
   };
+
 
   return (
     <CustomTabs value={selectedTab} onChange={handleChangeTab}>

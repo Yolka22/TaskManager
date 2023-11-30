@@ -1,3 +1,4 @@
+//user reducer
 const initialState = {
   logedUser: null,
 };

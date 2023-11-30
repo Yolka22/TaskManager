@@ -79,14 +79,7 @@ class ApiHandler {
     }
   }
 
-  static async deleteSubTask(subtaskId) {
-    try {
-      await axios.delete(`${host}/subtask/${subtaskId}`);
-      console.log("Subtask deleted successfully");
-    } catch (error) {
-      console.error("Error deleting subtask", error);
-    }
-  }
+
 
   static async addSubTask({ TaskId, title }) {
     try {
@@ -96,6 +89,24 @@ class ApiHandler {
     } catch (error) {
         console.error("Error adding sub task", error);
     }
+}
+
+static async deleteSubTask(subtaskId) {
+  try {
+    await axios.delete(`${host}/subtask/${subtaskId}`);
+    console.log("Subtask deleted successfully");
+  } catch (error) {
+    console.error("Error deleting subtask", error);
+  }
+}
+
+static async changeSubTaskStatus(subtaskId){
+  try {
+    await axios.post(`${host}/subtask/status`,subtaskId);
+    console.log("Subtask status changed successfully");
+  } catch (error) {
+    console.error("Error changing subtask status", error);
+  }
 }
 
 }

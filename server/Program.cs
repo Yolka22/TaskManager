@@ -270,6 +270,32 @@ app.MapDelete("/subtask/{subtaskId}", async (HttpContext context, AppDb db) =>
     }
 });
 
+app.MapPost("/subtask/status", async (HttpContext context, AppDb db) =>
+{
+    try
+    {
+        // Read subtask ID and new status from the request body
+        var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
+        var subtaskId = JsonConvert.DeserializeObject<int>(requestBody);
+        var newStatus = !db.Subtasks.First(st => st.Id == subtaskId).IsCompleted;
+
+        // Update the subtask status in the database
+        db.Subtasks.First(st => st.Id == subtaskId).IsCompleted = newStatus;
+        await db.SaveChangesAsync();
+
+        context.Response.StatusCode = 200;
+        await context.Response.WriteAsync($"Subtask status updated successfully. New status: {newStatus}");
+    }
+    catch (Exception ex)
+    {
+        // Handle exceptions if something goes wrong
+        Console.Error.WriteLine($"Error updating subtask status: {ex.Message}");
+        context.Response.StatusCode = 500; // Internal Server Error
+        await context.Response.WriteAsync("Internal Server Error");
+    }
+});
+
+
 app.Run();
 
 public class AppDb : DbContext

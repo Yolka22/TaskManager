@@ -61,3 +61,4 @@ D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Microsoft.EntityFramewor
 D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\System.CodeDom.dll
 D:\VSCODE\repos\C_Sharp\ToDoApp\server\bin\Debug\net7.0\Newtonsoft.Json.dll
+D:\VSCODE\repos\C_Sharp\ToDoApp\server\obj\Debug\net7.0\server.sourcelink.json

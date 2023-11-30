@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import ApiHandler from '../../API/ApiHandler';
 import { useDispatch,useSelector } from 'react-redux';
 
-import { Box, Input, Typography } from '@mui/joy';
+import { Box, Input, Textarea, Typography } from '@mui/joy';
 
 export default function AddTaskForm() {
     const dispatch = useDispatch();
@@ -27,6 +27,7 @@ export default function AddTaskForm() {
             <Input sx={inputSx} {...register("Title", { required: true })} placeholder="Title" />
             <Input sx={inputSx} {...register("Description")} placeholder="Description" />
             <Input sx={inputSx} {...register("Deadline")} type="datetime-local" placeholder="Deadline" />
+            <Textarea minRows={3} sx={inputSx} {...register("Comment")} placeholder="Comment" />
             <Box sx={{display:"flex",alignItems:"center"}}>
                 <Typography>Priority</Typography>
                 <Input sx={inputSx} {...register("Priority")} type="number"/>

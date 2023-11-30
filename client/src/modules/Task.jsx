@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { useInView } from 'react-intersection-observer';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import Button from "@mui/joy/Button";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
@@ -19,8 +19,12 @@ const fadeIn = keyframes`
 `;
 
 const FadeInFragment = styled.div`
-  animation: ${(props) => (props.inView ? fadeIn : 'none')} 1s ease-in-out;
+  ${({ $inview }) => $inview && css`
+    animation: ${fadeIn} 1s ease-in-out;
+    opacity: 1;
+  `}
 `;
+
 
 export default function Task({ task, userId, dispatch }) {
   const [open, setOpen] = useState(false);
@@ -42,12 +46,12 @@ export default function Task({ task, userId, dispatch }) {
     }, 500);
   };
 
-  const [ref, inView] = useInView({
+  const [ref, inview] = useInView({
     triggerOnce: true,
   });
 
   return (
-    <FadeInFragment inView={inView} ref={ref}>
+    <FadeInFragment $inview={inview.toString()} ref={ref}>
       <Button
         sx={{
           height: "250px",
@@ -127,6 +131,10 @@ export default function Task({ task, userId, dispatch }) {
 
           <Typography level="h2" fontSize="xl">
             {`Deadline: ${task.deadline}`}
+          </Typography>
+
+          <Typography level="h2" fontSize="xl">
+            {`Comment: ${task.comment}`}
           </Typography>
           <Button color="danger" onClick={deleteHandler}>
             delete
