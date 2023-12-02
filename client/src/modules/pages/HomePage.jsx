@@ -9,6 +9,7 @@ import { styled } from "@mui/system";
 
 import TasksList from "../TasksList";
 import TasksListWithSort from "../TasksListWithSort";
+import Calendar from "../Calendar";
 
 const CustomTabs = styled(Tabs)({
   backgroundColor: "#f0f0f0",
@@ -62,12 +63,7 @@ export default function HomePage() {
       <TabPanel value={2}>
         <Box>
           <Box sx={{ display: "flex" }}>
-            <Typography>Id:</Typography>
-            <Typography>{logUser.id}</Typography>
-          </Box>
-          <Box sx={{ display: "flex" }}>
-            <Typography>name:</Typography>
-            <Typography>{logUser.name}</Typography>
+            <Calendar/>
           </Box>
         </Box>
       </TabPanel>
