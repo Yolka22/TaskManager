@@ -4,10 +4,14 @@ import TasksList from "./TasksList";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Sheet from "@mui/joy/Sheet";
-import Button from "@mui/joy/Button";
-import { Box , Typography } from "@mui/joy";
+import { Button,Box , Typography } from "@mui/joy";
+
 
 export default function TasksModalHolder({ array }) {
+
+  const blinkingAnimation = `
+  blinking 1s infinite
+`;
 
     const [open, setOpen] = useState(false);
 
@@ -21,6 +25,7 @@ export default function TasksModalHolder({ array }) {
           ":hover": {
             backgroundColor: "#BAD4AA",
           },
+          animation:blinkingAnimation,
         }}
         variant="outlined"
         color="neutral"

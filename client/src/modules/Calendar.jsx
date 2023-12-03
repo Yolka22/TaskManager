@@ -48,9 +48,6 @@ export default function Calendar() {
 
   const tasksByDay = groupTasksByDay();
 
-  // Используйте useState для tasksForDay
-  const [tasksForDay, setTasksForDay] = useState([]);
-
   useEffect(() => {
     console.log(tasksByDay);
   }, []);
