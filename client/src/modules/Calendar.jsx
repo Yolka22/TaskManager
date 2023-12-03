@@ -59,16 +59,16 @@ export default function Calendar() {
     padding: "10px",
     textAlign: "center",
     border: "1px solid #ddd",
-    width: "14.28%", // Добавлено свойство width для равномерного распределения по 7 дням
+    borderRadius:"10px"
   };
 
-  // Стиль для ячеек
   const tableCellStyle = {
     textAlign: "center",
     padding: "8px",
     border: "1px solid #ddd",
     backgroundColor: "#f0f0f0",
-    width: "14.28%", // Добавлено свойство width для равномерного распределения по 7 дням
+    fontSize: "20px",
+    borderRadius:"10px"
   };
 
   return (
@@ -85,7 +85,7 @@ export default function Calendar() {
         <Typography level="h3">{format(currentDate, "MMMM yyyy")}</Typography>
         <Button onClick={nextMonth}>Next Month</Button>
       </div>
-      <table style={{ width: "100%", height: "90%", borderCollapse: "collapse" }}>
+      <table style={{ width: "95%", height: "90%",  opacity:0.9, margin:"auto",borderSpacing:"5px" }}>
         <thead>
           <tr>
             <th style={tableHeaderStyle}>Sun</th>

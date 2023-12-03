@@ -8,11 +8,11 @@ import TasksListWithSort from "../TasksListWithSort";
 import Calendar from "../Calendar";
 
 const CustomButton = styled(Button)({
-  backgroundColor: "#f0f0f0",
   fontSize: "16px",
   height: "100%",
-  width: "100%",
   borderRadius: "5px",
+  background: "#fff",
+  margin:"5px"
 });
 
 export default function HomePage() {
@@ -35,11 +35,13 @@ export default function HomePage() {
 
   return (
     <Box>
-      <CustomButton onClick={handleClick}>
-        <Typography level="h3" fontSize="xl">
-          Menu
-        </Typography>
-      </CustomButton>
+      <Box sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+        <CustomButton onClick={handleClick}>
+          <Typography level="h3" fontSize="xl">
+            Menu
+          </Typography>
+        </CustomButton>
+      </Box>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={() => handleMenuItemClick(1)}>
           <Typography level="h3" fontSize="xl">

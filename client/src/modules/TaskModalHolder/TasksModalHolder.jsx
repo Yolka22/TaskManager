@@ -20,7 +20,7 @@ export default function TasksModalHolder({ array }) {
         sx={{
           height: "40px",
           width: "40px",
-          borderRadius:"20px",
+          borderRadius: "20px",
           backgroundColor: "#EBF5DF",
           ":hover": {
             backgroundColor: "#BAD4AA",
@@ -34,12 +34,17 @@ export default function TasksModalHolder({ array }) {
         onClick={() => setOpen(true)}
       >
         <Typography
-          
           sx={{
             color: array.length > 0 ? "#fff" : "#000",
           }}
         >
-          {array.length}
+          {array.length > 0 ? (
+            array.length
+          ) : (
+            <Typography fontSize="xl" sx={{ color: "teal", fontWeight: 500 }}>
+              +
+            </Typography>
+          )}
         </Typography>
         <Box
           sx={{
@@ -53,7 +58,17 @@ export default function TasksModalHolder({ array }) {
         aria-describedby="modal-desc"
         open={open}
         onClose={() => setOpen(false)}
-        sx={{ borderRadius:"10px",padding:"20px", display: "flex", justifyContent: "center", alignItems: "center",overflow:"auto",width:"80vw",height:"80vh", margin:"auto" }}
+        sx={{
+          borderRadius: "10px",
+          padding: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "auto",
+          width: "80vw",
+          height: "80vh",
+          margin: "auto",
+        }}
       >
         <Sheet
           variant="outlined"
@@ -63,10 +78,10 @@ export default function TasksModalHolder({ array }) {
             boxShadow: "lg",
             display: "flex",
             flexDirection: "column",
-            overflow:"auto",
-            
-            
-            width:"100%",height:"100%"
+            overflow: "auto",
+
+            width: "100%",
+            height: "100%",
           }}
         >
           <ModalClose variant="plain" size="xl" sx={{ m: 2 }} />
