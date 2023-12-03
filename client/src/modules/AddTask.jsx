@@ -12,14 +12,14 @@ export default function AddTask() {
   return (
     <React.Fragment>
       <Button sx={{
-        height:"250px",
-        width:"250px",
+        height:"50px",
+        width:"50px",
         background:"#D4D4AA",
         ":hover":{
           background:"#EDB458"
         }
       }} variant="outlined" color="neutral" onClick={() => setOpen(true)}>
-        <Typography>Add Task</Typography>
+        <Typography>+</Typography>
       </Button>
       <Modal
         aria-labelledby="modal-title"

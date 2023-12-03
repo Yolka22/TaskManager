@@ -14,7 +14,7 @@ export default function LoginForm() {
     const { register, handleSubmit } = useForm();
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit((data) => {
+        <form  className={styles.form} onSubmit={handleSubmit((data) => {
             ApiHandler.UserLogin(data, dispatch, navigate);
         })}>
             <Input {...register("Name", { required: true })} placeholder="Name" />

@@ -11,7 +11,7 @@ import {
   addDays,
 } from "date-fns";
 import { useSelector } from "react-redux";
-import TasksModalHolder from "./TasksModalHolder";
+import TasksModalHolder from "./TaskModalHolder/TasksModalHolder";
 import { Button, Typography } from "@mui/joy";
 
 export default function Calendar() {
@@ -114,10 +114,15 @@ export default function Calendar() {
                       backgroundColor: isSameMonth(day, currentDate)
                         ? "#f0f0f0"
                         : "#ddd",
+                        fontSize:"20px",
+                        
                     }}
                     key={day}
                   >
+                    <Typography margin="5px" fontSize="xl">
                     {format(day, "d")}
+                    </Typography>
+                    
                     {tasksForDay && tasksForDay.length > 0 ? (
                       <TasksModalHolder array={tasksForDay} />
                     ) : (

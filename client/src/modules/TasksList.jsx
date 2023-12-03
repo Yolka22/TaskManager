@@ -13,10 +13,11 @@ export default function TasksList({array}) {
   return (
     <Box
       sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(7, 1fr)",
-        gap: 2,
-        margin: "5px",
+        display: "flex",
+        flexWrap:"wrap",
+        alignItems:"center",
+        justifyContent:"center",
+
       }}
     >
       {array.map((task) => (

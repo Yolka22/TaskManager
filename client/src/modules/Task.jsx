@@ -54,11 +54,16 @@ export default function Task({ task, userId, dispatch }) {
     <FadeInFragment $inview={inview.toString()} ref={ref}>
       <Button
         sx={{
-          height: "250px",
-          width: "250px",
+          height: "200px",
+          width: "200px",
+          margin: "10px",
           backgroundColor: "#EBF5DF",
           ":hover": {
             backgroundColor: "#BAD4AA",
+          },
+          '@media (max-width:600px)': {
+            height: "100px",
+            width: "100px",
           },
         }}
         variant="outlined"

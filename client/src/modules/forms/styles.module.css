@@ -1,4 +1,11 @@
 .form{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.form > :nth-child(1),
+.form > :nth-child(2) {
+    margin: 10px;
 }
