@@ -3,11 +3,12 @@ import React from "react";
 import Task from "./Task";
 import AddTask from "./AddTask";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function TasksList({array,userId}) {
+export default function TasksList({array}) {
 
     const dispatch = useDispatch();
+    const userId = useSelector((state) => state.user.logedUser.id);
 
   return (
     <Box

@@ -9,7 +9,7 @@ const sortOptions = [
   { label: 'Priority', value: 'priority' },
 ];
 
-export default function TasksListWithSort({ array, userId }) {
+export default function TasksListWithSort({ array }) {
   const [tasks, setTasks] = useState(array);
   const [sortType, setSortType] = useState(null);
 
@@ -84,7 +84,7 @@ export default function TasksListWithSort({ array, userId }) {
           Clear
         </Button>
       </ButtonGroup>
-      <TasksList array={tasks} userId={userId} />
+      <TasksList array={tasks} />
     </Box>
   );
 }

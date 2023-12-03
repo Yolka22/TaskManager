@@ -58,7 +58,7 @@ export default function HomePage() {
         </CustomTab>
       </CustomTabsList>
       <TabPanel value={1}>
-        <TasksList array={logUser.tasks} userId={logUser.id}></TasksList>
+        <TasksList array={logUser.tasks}></TasksList>
       </TabPanel>
       <TabPanel value={2}>
         <Box>
